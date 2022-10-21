@@ -44,7 +44,7 @@
                     int currentPage = ViewBag.CurrentPage;
                     int pageCount = ViewBag.PageCount;
                     IEnumerable<int> pages = Enumerable.Range(1, ViewBag.PageCount);
-                    IEnumerable<int> pagesToShow = pages.Where(p => p >= currentPage - 4 && p <= currentPage + 4 && p > 0 && p < pageCount);
+                    IEnumerable<int> pagesToShow = pages.Where(p => p >= currentPage - 4 && p <= currentPage + 4 && p > 0 && p <= pageCount);
 
                     if (!pagesToShow.Contains(1))
                     {
