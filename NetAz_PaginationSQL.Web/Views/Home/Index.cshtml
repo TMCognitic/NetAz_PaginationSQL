@@ -1,0 +1,96 @@
+﻿@model IEnumerable<NetAz_PaginationSQL.Web.Models.DataDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<div>Current Page : @ViewBag.CurrentPage</div>
+<div>Page Count : @ViewBag.PageCount</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Value)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>            
+        </tr>}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3">
+                @{
+                    int currentPage = ViewBag.CurrentPage;
+                    int pageCount = ViewBag.PageCount;
+                    IEnumerable<int> pages = Enumerable.Range(1, ViewBag.PageCount);
+                    IEnumerable<int> pagesToShow = pages.Where(p => p >= currentPage - 4 && p <= currentPage + 4 && p > 0 && p < pageCount);
+
+                    if (!pagesToShow.Contains(1))
+                    {
+                        <span><a asp-action="index" asp-controller="home" asp-route-id="1">1</a> ... </span>
+                    }
+
+                    if(currentPage > 10)
+                    {
+                        //&#60;
+                        <span> <a asp-action="index" asp-controller="home" asp-route-id="@(currentPage - 10)">&#171;</a></span>
+                    }
+
+                    if (currentPage > 5)
+                    {
+                        //&#60;
+                        <span> <a asp-action="index" asp-controller="home" asp-route-id="@(currentPage - 5)">&#60;</a></span>
+                    }
+
+                    foreach(int pageId in pagesToShow)
+                    {
+                        if (pageId == currentPage)
+                        {
+                            <span> @pageId</span>
+                        }
+                        else
+                        {
+                            <span> <a asp-action="index" asp-controller="home" asp-route-id="@pageId">@pageId</a></span>
+                        }
+                    }
+
+                    if(pageCount - currentPage > 5)
+                    {
+                        <span> <a asp-action="index" asp-controller="home" asp-route-id="@(currentPage + 5)">&#62;</a></span>
+                    }
+
+                    if (pageCount - currentPage > 10)
+                    {
+                        <span> <a asp-action="index" asp-controller="home" asp-route-id="@(currentPage + 10)">&#187;</a></span>
+                    }
+
+                    if (!pagesToShow.Contains(pageCount))
+                    {
+                        <span> ... <a asp-action="index" asp-controller="home" asp-route-id="@pageCount">@pageCount</a></span>
+                    }
+                }
+            </td>
+        </tr>
+    </tfoot>
+</table>
